@@ -5,18 +5,12 @@ let targetWins = 5;
 let currentRound = 0;
 let inProgress = true;
 
-const ROCK_EMOJI = "👊";
-const PAPER_EMOJI = "🫱";
-const SCISSORS_EMOJI = "✌️";
-
 function setup() {
     document.querySelector('.targetWins').innerText = targetWins;
     document.querySelector('.player-wins').innerText  = 0;
     document.querySelector('.computer-wins').innerText = 0;
     document.querySelector('.draws').innerText = 0;
 }
-
-
 
 function getComputerChoice() {
     let selection = Math.floor(Math.random() * 3)
@@ -108,6 +102,7 @@ function updateResultText(winner) {
 function updatePlayerMove(playerChoice) {
     document.querySelector('#player-move').innerText = playerChoice;
 }
+
 function updateComputerMove(computerChoice) {
     document.querySelector('#computer-move').innerText = computerChoice;
 }
@@ -126,9 +121,7 @@ function checkWinCondition() {
 
 function playRound(computerChoice, playerChoice) {
     if (inProgress) {
-        console.log(`Player choice: ${playerChoice}`);
         updatePlayerMove(playerChoice);
-        console.log(`Computer choice: ${computerChoice}`);
         updateComputerMove(computerChoice);
         let winner = getWinner(computerChoice, playerChoice);
         updateScoreboard(winner);
