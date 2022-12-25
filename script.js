@@ -1,3 +1,23 @@
+let playerWins = 0;
+let computerWins = 0;
+let draws = 0;
+let targetWins = 5;
+let currentRound = 0;
+let inProgress = true;
+
+const ROCK_EMOJI = "👊";
+const PAPER_EMOJI = "🫱";
+const SCISSORS_EMOJI = "✌️";
+
+function setup() {
+    document.querySelector('.targetWins').innerText = targetWins;
+    document.querySelector('.player-wins').innerText  = 0;
+    document.querySelector('.computer-wins').innerText = 0;
+    document.querySelector('.draws').innerText = 0;
+}
+
+
+
 function getComputerChoice() {
     let selection = Math.floor(Math.random() * 3)
     if (selection == 1) {
@@ -16,26 +36,8 @@ function checkValidInput(input) {
             : false;
 }
 
-function getPlayerChoice() {
-    let isValidChoice = false
-    let playerChoice;
-    while (!isValidChoice) {
-        playerChoice = prompt("Rock, paper or scissors? Choose carefully!").toLowerCase().trim();
-        isValidChoice = checkValidInput(playerChoice);
-    }
-    return playerChoice;
-}
-
-function showPlayerWinsMsg() {
-    console.log("Congratulations, you won!");
-}
-
-function showComputerWinsMsg() {
-    console.log("You lost, better luck next time!");
-}
-
-function showDrawGameMsg() {
-    console.log("It's a draw!");
+function playerPlays(move) {
+    playRound(getComputerChoice(), move);
 }
 
 function getWinner(computerChoice, playerChoice) {
@@ -71,44 +73,77 @@ function getWinner(computerChoice, playerChoice) {
     }
 }
 
-function playRound(computerChoice, playerChoice) {
-    console.log(`Player choice: ${playerChoice}`);
-    console.log(`Computer choice: ${computerChoice}`);
-    let winner = getWinner(computerChoice, playerChoice);
+function updateScoreboard(winner) {
     switch (winner) {
         case "player":
-            showPlayerWinsMsg();
+            playerWins++;
+            document.querySelector('.player-wins').innerText = playerWins;
             break;
         case "computer":
-            showComputerWinsMsg();
+            computerWins++
+            document.querySelector('.computer-wins').innerText = computerWins;
             break;
         case "draw":
-            showDrawGameMsg();
+            draws++;
+            document.querySelector('.draws').innerText = draws;
             break;
     }
-    return winner;
 }
 
-function game() {
-    let playerWins = 0;
-    let computerWins = 0;
-    let draws = 0;
-    let numberOfRounds = 5;
-    for (let i = 0; i < numberOfRounds; i++) {
-        console.log(`Round ${(i+1)}:`);
-        let winner = playRound(getComputerChoice(), getPlayerChoice());
-        if (winner == "computer") {
-            computerWins++;
-        } else if (winner == "player") {
-            playerWins++;
-        } else {
-            draws++;
-        }
+function updateResultText(winner) {
+    let resultField = document.querySelector('#result');
+    switch (winner) {
+        case "player":
+            resultField.innerText = "You won the round!";
+            break;
+        case "computer":
+            resultField.innerText = "Computer won the round!";
+            break;
+        case "draw":
+            resultField.innerText = "It's a draw!";
+            break;
     }
-    console.log(`Game ended after ${numberOfRounds} rounds.`);
-    console.log(`Player wins: ${playerWins}.`);
-    console.log(`Computer wins: ${computerWins}.`);
-    console.log(`Draws: ${draws}.`);
 }
 
-game();
+function updatePlayerMove(playerChoice) {
+    document.querySelector('#player-move').innerText = playerChoice;
+}
+function updateComputerMove(computerChoice) {
+    document.querySelector('#computer-move').innerText = computerChoice;
+}
+
+function checkWinCondition() {
+    let finalResultField = document.querySelector('#final-result')
+    if (playerWins > 4) { // player won the match
+        inProgress = false;
+        finalResultField.innerText = "Congratulations, you won the match!"
+    } 
+    else if (computerWins > 4) { // computer won the match
+        inProgress = false;
+        finalResultField.innerText = "Computer wins the match. Better luck next time."
+    }
+}
+
+function playRound(computerChoice, playerChoice) {
+    if (inProgress) {
+        console.log(`Player choice: ${playerChoice}`);
+        updatePlayerMove(playerChoice);
+        console.log(`Computer choice: ${computerChoice}`);
+        updateComputerMove(computerChoice);
+        let winner = getWinner(computerChoice, playerChoice);
+        updateScoreboard(winner);
+        updateResultText(winner);
+        currentRound++;
+    }
+    checkWinCondition();
+
+}
+
+let buttons = document.querySelectorAll('button');
+buttons.forEach(
+    button => button.addEventListener("click", function() {
+        playerPlays(button.id);
+    })
+);
+
+setup();

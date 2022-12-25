@@ -5,9 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="script.js" defer></script>
 </head>
 <body>
-    Nothing here, open the console!
+    <div id="header">
+        <h1>Rock, Paper, Scissors</h1>
+    </div>
+    <div id="content">
+        <div id="rounds">
+            <p>Currently playing to <span class="targetWins"></span>.</p>
+        </div>
+        <div id="buttons">
+            <button id="rock">Rock 👊</button>
+            <button id="paper">Paper 🫱</button>
+            <button id="scissors">Scissors ✌️</button>
+        </div>
+        <div id="last-round">
+            <p>Last round results: </p>
+            <ul>
+                <li>Computer chose: <span id="computer-move"></span></li>
+                <li>Player chose: <span id="player-move"></span></li>
+                <li>Result is: <span id="result"></span></li>
+
+            </ul>
+        </div>
+        <div id="scoreboard">
+            <p>Computer wins: <span class="computer-wins"></span></p>
+            <p>Player wins: <span class="player-wins"></span></p>
+            <p>Draws: <span class="draws"></span></p>
+        </div>
+        <div id="final-result">
+        </div>
+    </div>
 </body>
 </html>
